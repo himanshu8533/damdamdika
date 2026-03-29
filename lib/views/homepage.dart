@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project/constants/color.dart';
 import 'package:project/views/home/home_widgets.dart';
 
+import '../constants/persons.dart';
 import '../widgets/widgets.dart';
 
 class Homepage extends StatefulWidget {
@@ -14,6 +15,12 @@ class _HomePageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      floatingActionButton: FloatingActionButton(
+          onPressed:() {},
+        backgroundColor: Colors.transparent,
+        child: gradientIconButton(
+          size: 55, iconData: Icons.group_add,),
+      ),// FloatingActionButton
       body: SafeArea(
         child: Column(
           children: [
@@ -30,7 +37,7 @@ class _HomePageState extends State<Homepage> {
                 ), //Padding
                 Padding(
                   padding: const EdgeInsets.only(right: 16.0),
-                  child: Icon(Icons.group_add, size: 32, color: greenColor),
+                  child: Icon(Icons.search, size: 32, color: blueColor),
                 ), //Padding
               ],
             ), //Row
@@ -47,7 +54,7 @@ class _HomePageState extends State<Homepage> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    addStoryWidget(
+                    gradientIconButton(
                       size: 60,
                       iconData: Icons.add,
                       text: "Your Story",
@@ -60,14 +67,13 @@ class _HomePageState extends State<Homepage> {
                         scrollDirection: Axis.horizontal,
                         children: List.generate(
                           5,
-                              (index) =>
-                              storyWidget(
-                                size: 60,
-                                showGreenStrip: true,
-                                text: "John Doe",
-                                imageUrl:
+                          (index) => storyWidget(
+                            size: 60,
+                            showGreenStrip: true,
+                            text: "John Doe",
+                            imageUrl:
                                 "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBlcnNvbnxlbnwwfHwwfHx8MA%3D%3D",
-                              ),
+                          ),
                         ),
                       ), //ListView
                     ), //Container
@@ -78,21 +84,22 @@ class _HomePageState extends State<Homepage> {
             const Divider(thickness: 0.6), //divider
             Expanded(
               child: ListView.separated(
-                itemCount: 7,
+                itemCount: persons.length,
                 physics: BouncingScrollPhysics(),
-                separatorBuilder: (context, index){
-                  return Divider(thickness: 0.3,);
+                separatorBuilder: (context, index) {
+                  return Divider(thickness: 0.3);
                 },
-                itemBuilder: (context, index) =>
-                    messageListTile(
-                      context: context,
-                      isOnline: true,
-                      imageUrl:
-                      "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBlcnNvbnxlbnwwfHwwfHx8MA%3D%3D",
-                      title: "John Doe",
-                      subTitle: "how are you",
-                      timeFrame: "16:32",
-                    ),
+                itemBuilder: (context, index) => messageListTile(
+                  context: context,
+                  isOnline: true,
+                  imageUrl:
+                      "https://randomuser.me/api/portraits/${persons[index]['picture']}",
+                  title:
+                      "${persons[index]['first_name']} ${persons[index]['last_name']}",
+                  subTitle: "how are you",
+                  messageCounter: 4,
+                  timeFrame: "16:32",
+                ),
               ), //ListView
             ), //Expanded
           ],

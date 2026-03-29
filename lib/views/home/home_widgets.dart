@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../constants/color.dart';
 
-Widget addStoryWidget({
+Widget gradientIconButton({
   required double size,
-  required IconData iconData,
-  required String text,
+  IconData? iconData,
+  int? counterText, String? text,
 }) {
   return Column(
     children: [
@@ -17,10 +17,15 @@ Widget addStoryWidget({
             colors: [greenGradient.lightShade, greenGradient.darkShade],
           ), //LinearGradient
         ), //BoxDecoration
-        child: Icon(iconData, color: Colors.white),
+        child: iconData!=null?Icon(iconData, color: Colors.white,
+        ):Center(child: counterText!=null?Text(counterText.toString(), style: const TextStyle(color: Colors.white),):const SizedBox()),//Icon
       ), //container
-      SizedBox(height: 10),
-      Text(text, style: TextStyle(color: grayColor.lightShade)),
+      text != null
+          ? const SizedBox(height: 10) //SizedBox
+          : const SizedBox(), //SizedBox
+      text != null
+          ? Text(text, style: TextStyle(color: grayColor.lightShade))
+          : const SizedBox(), // Text
     ],
   ); //Column
 }
@@ -29,7 +34,8 @@ Widget storyWidget({
   required double size,
   required String imageUrl,
   required String text,
-  required bool showGreenStrip,}) {
+  bool showGreenStrip = false,
+}) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8.0),
     child: Column(
@@ -39,9 +45,12 @@ Widget storyWidget({
           height: size,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: showGreenStrip?Border.all(color: greenColor, width: 2):null), //BoxDecoration
+            border: showGreenStrip
+                ? Border.all(color: greenColor, width: 2)
+                : null,
+          ), //BoxDecoration
           child: Padding(
-            padding: EdgeInsets.all(showGreenStrip?2.2:0.0),
+            padding: EdgeInsets.all(showGreenStrip ? 2.2 : 0.0),
             child: Container(
               width: size,
               height: size,

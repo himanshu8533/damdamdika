@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project/views/home/home_widgets.dart';
 
 import '../constants/color.dart';
 
@@ -8,10 +9,11 @@ Widget messageListTile({
   required String title,
   required String subTitle,
   required String timeFrame,
-  bool isOnline = false
+  int? messageCounter,
+  bool isOnline = false,
 }) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0,),
+    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
     child: Row(
       children: [
         Stack(
@@ -27,19 +29,21 @@ Widget messageListTile({
                 ), //BoxDecoration
               ), //BoxContainer
             ), //Container
-            isOnline?Positioned(
-              bottom: 3,
-              right: 3,
-              child: Container(
-                width: 15,
-                height: 15,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
-                  color: greenColor,
-                ),
-              ),
-            ): const SizedBox(),//Positioned
+            isOnline
+                ? Positioned(
+                    bottom: 3,
+                    right: 3,
+                    child: Container(
+                      width: 15,
+                      height: 15,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                        color: greenColor,
+                      ),
+                    ),
+                  )
+                : const SizedBox(), //Positioned
           ],
         ), //Stack
         Padding(
@@ -47,30 +51,43 @@ Widget messageListTile({
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              SizedBox(
+                child: Container(
+                  width: MediaQuery.of(context).size.width - 120.0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w700,
+                        ), //TextStyle
+                      ), //Text
+                      Text(
+                        timeFrame,
+                        style: TextStyle(color: grayColor.lightShade),
+                      ), //Text
+                    ],
+                  ), //row
+                ),
+              ), //Container
+              const SizedBox(height: 14),
+              SizedBox(
                 width: MediaQuery.of(context).size.width - 120.0,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Text(
-                      timeFrame,
+                      subTitle,
                       style: TextStyle(color: grayColor.lightShade),
-                    ),
+                    ), //Text
+                    messageCounter != null
+                        ? gradientIconButton(size: 20,counterText: messageCounter)
+                        : const SizedBox(),
                   ],
-                ), //row
-              ), //Container
-              SizedBox(height: 14),
-              Text(
-                subTitle,
-                style: TextStyle(color: grayColor.lightShade),
-              ),
+                ),
+              ), //Row
             ],
           ), //column
         ), //padding
